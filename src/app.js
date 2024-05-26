@@ -22,9 +22,12 @@ app.use(express.static("public"))
 app.use(express.urlencoded({extended:true}))
 app.use(express.json());
 
+import allrouter from './routes/user.routes.js'
+
 app.use("/", healthCheckRouter);
 app.use('/api/auth', authRoutes);
 app.use('/api/seller', sellerRoutes);
+app.use('/api/all' , allrouter);
 
 
 export default app;
