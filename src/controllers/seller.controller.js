@@ -4,7 +4,7 @@ import {query} from '../db/index.js';
 import apiResponse from '../utils/apiResponse.js';
 
 export const uploadBooks = (req, res) => {
-    // console.log("req.user" , req.user.role);
+   
     if (req.user.role !== 'seller') return res.status(403).send({ message: 'Unauthorized' });
 
     const seller_id = req.user.id;
@@ -22,7 +22,7 @@ export const uploadBooks = (req, res) => {
             await query('INSERT INTO books (title, author, publishedDate, price, seller_id) VALUES ?', [books]);
             res.status(201).send('Books uploaded successfully.');
             fs.unlinkSync(filePath)
-             // Delete the uploaded file after processing
+             
             }
             catch(error){
                 console.error(error);
@@ -50,17 +50,19 @@ export const addBook = async (req, res) => {
 
 export const getBooks = async(req, res) => {
     // console.log(req.user.role);
+    try{
     if (req.user.role !== 'seller') return res.status(403).send({ message: 'Unauthorized' });
 
     // console.log("req.user.id",req.user.id);
     const q1 = await query('SELECT * FROM books WHERE seller_id = ?', [req.user.id]);
-    console.log(q1[1]);
+    console.log(q1[0]);
     if (q1[0]){
-       res.status(200).send({message: "books fetched"})
+        throw new apiResponse(200 , q1[0] ,message="success")
     }
-    else{
-        res.status(400).send({message:"unauthorized user"})
-    }
+}
+catch(error){
+    console.error(error);
+}
 };
 
 export const updateBook = async(req, res) => {
