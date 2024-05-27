@@ -121,10 +121,11 @@ This project implements a REST backend using Node.js, Express.js, and MySQL to s
 
 The CSV file for uploading books should have the following columns:
 
-```csv
-title,author,price
-Book Title 1,Author 1,19.99
-Book Title 2,Author 2,25.99
+  ```csv
+  title,author,price
+  Book Title 1,Author 1,19.99
+  Book Title 2,Author 2,25.99
+  ```
 
 ### Error Handling
 
