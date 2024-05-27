@@ -39,8 +39,8 @@ This project implements a REST backend using Node.js, Express.js, and MySQL to s
 1. **Clone the Repository:**
 
    ```bash
-   git clone https://github.com/yourusername/bookstore-backend.git
-   cd bookstore-backend
+   git clone https://github.com/rj225/startex-backend.git
+   cd startex-backend
 
 
 2. **Install Dependencies:**
