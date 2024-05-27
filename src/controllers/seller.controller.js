@@ -55,10 +55,16 @@ export const getBooks = async(req, res) => {
 
     // console.log("req.user.id",req.user.id);
     const q1 = await query('SELECT * FROM books WHERE seller_id = ?', [req.user.id]);
-    console.log(q1[0]);
-    if (q1[0]){
-        throw new apiResponse(200 , q1[0] ,message="success")
-    }
+    return res.status(200).json(
+        new apiResponse(
+            200,
+            {
+                books:q1[0],
+            },
+            "success"
+        )
+    ); 
+    
 }
 catch(error){
     console.error(error);
@@ -73,8 +79,16 @@ export const updateBook = async(req, res) => {
     const { title, author, price } = req.body;
 
     // const query = ;
-    await query('UPDATE books SET title = ?, author = ?, price = ? WHERE id = ? AND seller_id = ?', [title, author, price, bookId, req.user.id]);
-     res.status(200).send({message:"successfuly updated the book details"});
+    const x = await query('UPDATE books SET title = ?, author = ?, price = ? WHERE id = ? AND seller_id = ?', [title, author, price, bookId, req.user.id]);
+
+    const updated = x[0].affectedRows;
+    if (updated !== 0) {
+        res.status(200).send('successfuly updated the book details');
+    }
+    else{
+        res.status(401).send('You are not the seller of the book. You cannot modify.');
+    }
+     res.status(200).send({message:""});
     }
     catch(error){
         console.log("error" , error);
@@ -91,10 +105,17 @@ export const deleteBook = async (req, res) => {
         const { bookId } = req.params;
 
         // Execute the delete query asynchronously
-        await query('DELETE FROM books WHERE id = ? AND seller_id = ?', [bookId, req.user.id]);
+        const x = await query('DELETE FROM books WHERE id = ? AND seller_id = ?', [bookId, req.user.id]);
+        // console.log("x" , x[0].affectedRows);
 
         // Respond with success message
-        res.status(200).send('Book deleted successfully.');
+        const deleted = x[0].affectedRows;
+        if (deleted !== 0) {
+            res.status(200).send('Book deleted successfully.');
+        }
+        else{
+            res.status(401).send('You are not the seller of the book. You cannot Delete.');
+        }
     } catch (error) {
         console.error('Error deleting book:', error);
         res.status(500).send('Error deleting book.');

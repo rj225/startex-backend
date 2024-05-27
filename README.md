@@ -47,6 +47,7 @@ This project implements a REST backend using Node.js, Express.js, and MySQL to s
 
    ```bash
    npm install
+   >> npm run dev
 
 ### API Endpoints
 
